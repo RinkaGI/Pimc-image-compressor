@@ -34,6 +34,6 @@ print('Compressing image...')
 
 for i in tqdm(range(100)):
     image = image.convert('RGB')
-    image.save('image_compressed.jpg', quality=15)
+    image.save('compressed_image.jpg', quality=15)
 
 print('Finished!')
