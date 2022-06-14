@@ -3,6 +3,8 @@
 ## How to install?
 ####  This tool has a installer, this will install the packages that Pimc uses, you have to have got Python3 and pip, so, open the installer with this code in terminal:
 
+#### --VERY IMPORTANT-- You have to get installed Tkinter, this installer doesn't install Tkinter, it depends by your linux distro or os 
+
 ```bash
 python3 install.py
 ```
