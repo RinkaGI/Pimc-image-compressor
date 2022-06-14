@@ -1,39 +1,92 @@
+from distutils import extension
+import tkinter as tk
+from tkinter.filedialog import askopenfilename
 from PIL import Image
-from tqdm import tqdm
-import os, sys, time
+from tqdm import tqdm_gui
 
-print(' -- WELCOME TO PIMC - RINKADEV -- ')
-print('Write your image directory')
+ventana = tk.Tk()
 
-originalImageText = input('-> ')
+# Configuracion de la ventana
+ventana.title('Pimc - Image Compressor')
+ventana.geometry("950x660")
+ventana.resizable(width=False, height=False)
+fondo = tk.PhotoImage(file='img/fondo.png')
+fondo1 = tk.Label(ventana, image=fondo).place(x=0, y=0, relwidth=1, relheight=1)
 
-image = Image.open(originalImageText)
+############################################# COMPONENTES DE INTERACCIÓN ########################################3
 
-print("")
-print("")
+# BOTONES
 
-print('Detecting your Operating System...')
+imageDir = None
+imageExtensions = ['*.png', '*.jpg', '*.jpeg']
 
-operatingSystem = sys.platform
+def botonImportarFunc():
+    imageDir = askopenfilename(
+        title = "Import image",
+        filetypes = [
+            (
+                'Images',
+                imageExtensions
+            )
+        ]
+    )
 
-windowsName = {"win32", "cygwin"}
-linuxMacName = {"linux", "linux2", "linux3", "darwin", "aix"}
+    imagen = Image.open(imageDir)
+
+    for i in tqdm_gui(range(int(60))):
+        imagen = imagen.convert('RGB')
+        imagen.save('compressed_image.jpg', quality=25)
 
 
-def clearTerminal():
-    if operatingSystem is windowsName:
-        os.system('cls')
-    elif operatingSystem is linuxMacName:
-        os.system('clear')
-    else:
-        os.system('clear')
+botonImportar = tk.Button(
+    master = ventana,
+    text = "Import image",
+    cursor = "hand2",
+    width = 20,
+    height = 1,
+    relief = "flat",
+    command = botonImportarFunc,
+    font = (
+        "Arial",
+        32,
+        "bold"
+    )
+)
 
-clearTerminal()
+botonImportarX = 950/2 - 250
+botonImportarY = 660/2
 
-print('Compressing image...')
+botonImportar.place(
+    x = botonImportarX,
+    y = botonImportarY
+)
 
-for i in tqdm(range(100)):
-    image = image.convert('RGB')
-    image.save('compressed_image.jpg', quality=15)
+def botonSalirFunc():
+    ventana.quit()
 
-print('Finished!')
+botonSalir = tk.Button(
+    master = ventana,
+    text = "Exit",
+    cursor = "hand2",
+    width = 10,
+    height = 1,
+    relief = "flat",
+    command = botonSalirFunc,
+    font = (
+        "Arial",
+        24,
+        "bold"
+    )
+)
+
+botonSalirX = 950-200
+botonSalirY = 660-50
+
+botonSalir.place(
+    x = botonSalirX,
+    y = botonSalirY
+)
+
+
+# Ejecutar la ventana
+ventana.mainloop()
